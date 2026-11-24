@@ -14,6 +14,7 @@ router.use(protect);
 router.get('/', getGraphData);
 router.post('/layout', saveGraphLayout);
 router.post('/edges', createEdge);
-router.delete('/edges/:edgeId', deleteEdge);
+// Use wildcard to allow slashes in edgeId after URL-decode
+router.delete('/edges/:edgeId(*)', deleteEdge);
 
 export default router;

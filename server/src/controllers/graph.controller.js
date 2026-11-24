@@ -233,26 +233,16 @@ export const createEdge = async (req, res, next) => {
 
 export const deleteEdge = async (req, res, next) => {
   try {
-    const { edgeId } = req.params;
+    // Decode URL-encoded edge IDs (e.g. edge-proj-task-... sent with encodeURIComponent)
+    const edgeId = decodeURIComponent(req.params.edgeId);
 
-    // 1. Delete custom edge from database by exact edgeId
+    // 1. Delete the custom edge record (may not exist for auto-generated edges)
     const deleted = await GraphEdge.findOneAndDelete({
       user: req.user._id,
       edgeId,
     });
 
-    // If not found by exact edgeId, check regex or prefix fallback
-    if (!deleted && edgeId) {
-      const cleanId = edgeId.replace(/[^a-zA-Z0-9_-]/g, '');
-      if (cleanId) {
-        await GraphEdge.deleteMany({
-          user: req.user._id,
-          edgeId: { $regex: cleanId },
-        });
-      }
-    }
-
-    // 2. If edge represents an inherent entity relation, unbind the relation
+    // 2. Unbind entity relations based on edge id prefix
     if (edgeId.startsWith('edge-proj-task-')) {
       const taskId = edgeId.replace('edge-proj-task-', '');
       await Task.updateOne({ _id: taskId, user: req.user._id }, { $set: { project: null } });
@@ -264,7 +254,9 @@ export const deleteEdge = async (req, res, next) => {
       await Task.updateOne({ _id: taskId, user: req.user._id }, { $set: { sourceDocument: null } });
     }
 
-    return sendSuccess(res, 200, 'Edge removed successfully', { edgeId });
+    // Always return success even if the edge didn't exist in the custom table
+    // (auto-generated edges from entity relations are removed via the unbind above)
+    return sendSuccess(res, 200, 'Edge removed successfully', { edgeId, deleted: !!deleted });
   } catch (err) {
     next(err);
   }
