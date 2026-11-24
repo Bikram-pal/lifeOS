@@ -10,6 +10,14 @@ import { AppError } from './utils/appError.js';
 // Route imports
 import authRoutes from './routes/auth.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
+import taskRoutes from './routes/task.routes.js';
+import projectRoutes from './routes/project.routes.js';
+import documentRoutes from './routes/document.routes.js';
+import noteRoutes from './routes/note.routes.js';
+import aiRoutes from './routes/ai.routes.js';
+import graphRoutes from './routes/graph.routes.js';
+import goalRoutes from './routes/goal.routes.js';
+import analyticsRoutes from './routes/analytics.routes.js';
 
 const app = express();
 
@@ -72,6 +80,14 @@ app.get('/api/health', (req, res) => {
 // Mount module routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/projects', projectRoutes);
+app.use('/api/v1/documents', documentRoutes);
+app.use('/api/v1/notes', noteRoutes);
+app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/graph', graphRoutes);
+app.use('/api/v1/goals', goalRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
 
 // Unhandled route catch-all
 app.all('*', (req, res, next) => {

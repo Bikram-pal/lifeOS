@@ -83,9 +83,9 @@ export const SettingsPage = () => {
                 onChange={(e) => setAiModel(e.target.value)}
                 className="w-full bg-[#111726] border border-[#233054] rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500 font-mono"
               >
-                <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (Recommended)</option>
-                <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (Fast / Low Latency)</option>
-                <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+                <option value="openai/gpt-oss-120b">openai/gpt-oss-120b (Active / High Reasoning)</option>
+                <option value="qwen/qwen3.8-27b">qwen/qwen3.8-27b (Fast / Accurate)</option>
+                <option value="openai/gpt-oss-20b">openai/gpt-oss-20b (Ultra Low Latency)</option>
               </select>
               <p className="text-xs text-slate-400 mt-1.5">
                 The AI service routes queries to this model via your backend Groq API client.
