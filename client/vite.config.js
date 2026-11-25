@@ -19,4 +19,18 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // Split large chunks so Vercel/CDN can serve them efficiently
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          query: ['@tanstack/react-query'],
+          flow: ['@xyflow/react'],
+          charts: ['recharts'],
+          markdown: ['react-markdown', 'remark-gfm'],
+        },
+      },
+    },
+  },
 });
